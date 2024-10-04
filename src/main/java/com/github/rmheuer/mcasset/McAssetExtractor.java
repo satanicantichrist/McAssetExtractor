@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -248,8 +249,10 @@ public final class McAssetExtractor {
         String version = args[0];
         String outPath = args[1];
         File outDir = new File(outPath);
-        if (outDir.exists())
-            exitError("Output directory already exists");
+        if (outDir.exists()){
+            if(Arrays.stream(outDir.list()).findAny().isPresent())
+                exitError("Output directory is not empty");
+        }
 
         new McAssetExtractor().run(version, outDir);
     }
